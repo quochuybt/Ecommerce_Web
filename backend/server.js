@@ -19,7 +19,8 @@ const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173,http:/
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      const isDevOrigin = /^https?:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+):\d+$/.test(origin || "");
+      if (!origin || allowedOrigins.includes(origin) || isDevOrigin) {
         return callback(null, true);
       }
       return callback(new Error(`CORS blocked origin: ${origin}`));

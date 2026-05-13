@@ -1,4 +1,19 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
+function resolveApiUrl() {
+  const configuredUrl = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
+
+  if (typeof window === "undefined") return configuredUrl;
+
+  const pageHost = window.location.hostname;
+  const isNetworkHost = pageHost !== "localhost" && pageHost !== "127.0.0.1";
+
+  if (isNetworkHost && configuredUrl.includes("localhost:3001")) {
+    return `${window.location.protocol}//${pageHost}:3001/api`;
+  }
+
+  return configuredUrl;
+}
+
+const API_URL = resolveApiUrl();
 
 async function request(path, options = {}) {
   const token = localStorage.getItem("electrohub-access-token");

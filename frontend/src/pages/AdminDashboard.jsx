@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { DollarSign, Package, ShoppingBag, UsersRound } from "lucide-react";
 import { analyticsApi } from "../store/api/analyticsApi.js";
-import { orders as fallbackOrders, products as fallbackProducts } from "../data/products.js";
 import { formatPrice } from "../utils/formatters.js";
 
 export default function AdminDashboard() {
@@ -16,15 +15,8 @@ export default function AdminDashboard() {
         setError("");
       })
       .catch((err) => {
-        setDashboard({
-          revenue: 186500000,
-          orders_count: fallbackOrders.length,
-          products_count: fallbackProducts.length,
-          users_count: 1284,
-          daily_revenue: [12000000, 18000000, 14400000, 23000000, 21000000, 26800000, 24500000],
-          top_products: fallbackProducts.slice(0, 4),
-        });
-        setError(`${err.message}. Hãy đăng nhập admin để xem dữ liệu thật.`);
+        setDashboard({ revenue: 0, orders_count: 0, products_count: 0, users_count: 0, daily_revenue: [], top_products: [] });
+        setError(`Không tải được dashboard từ backend: ${err.message}`);
       });
   }, []);
 
@@ -46,7 +38,6 @@ export default function AdminDashboard() {
         <h1 className="mt-2 text-3xl font-bold text-ink">Dashboard quản trị</h1>
         {error && <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">{error}</p>}
       </div>
-
       <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {metrics.map((metric) => {
           const Icon = metric.icon;
@@ -59,20 +50,23 @@ export default function AdminDashboard() {
           );
         })}
       </div>
-
       <div className="grid gap-5 xl:grid-cols-[1.4fr_0.6fr]">
         <div className="rounded-xl border border-line bg-white p-5 shadow-sm">
           <h2 className="text-lg font-bold text-ink">Doanh thu 7 ngày</h2>
-          <div className="mt-6 grid h-64 grid-cols-7 items-end gap-3">
-            {(dashboard?.daily_revenue || []).map((value, index) => (
-              <span key={index} className="rounded-t-lg bg-primary" style={{ height: `${Math.max(12, (value / maxRevenue) * 100)}%` }} />
-            ))}
-          </div>
+          {dashboard?.daily_revenue?.length ? (
+            <div className="mt-6 grid h-64 grid-cols-7 items-end gap-3">
+              {dashboard.daily_revenue.map((value, index) => <span key={index} className="rounded-t-lg bg-primary" style={{ height: `${Math.max(12, (value / maxRevenue) * 100)}%` }} />)}
+            </div>
+          ) : (
+            <div className="mt-6 rounded-lg bg-soft p-8 text-center text-sm text-muted">Chưa có dữ liệu doanh thu.</div>
+          )}
         </div>
         <div className="rounded-xl border border-line bg-white p-5 shadow-sm">
           <h2 className="text-lg font-bold text-ink">Sản phẩm top rating</h2>
           <div className="mt-4 divide-y divide-line">
-            {(dashboard?.top_products || []).map((product) => (
+            {(dashboard?.top_products || []).length === 0 ? (
+              <div className="py-8 text-center text-sm text-muted">Chưa có sản phẩm.</div>
+            ) : dashboard.top_products.map((product) => (
               <div className="flex items-center justify-between gap-4 py-3 text-sm" key={product.id}>
                 <span className="font-medium text-ink">{product.name}</span>
                 <strong className="text-primary">{product.rating}</strong>

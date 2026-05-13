@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { BadgeCheck, Headphones, ShieldCheck, Truck } from "lucide-react";
 import ProductCard from "../components/products/ProductCard.jsx";
-import { products as fallbackProducts } from "../data/products.js";
 import { productsApi } from "../store/api/productsApi.js";
 import { normalizeProducts } from "../utils/productMapper.js";
 
@@ -19,37 +18,34 @@ const categories = [
 
 export default function HomePage() {
   const [products, setProducts] = useState([]);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     productsApi
       .list("?limit=4&sort=rating")
-      .then((data) => setProducts(normalizeProducts(data.items || [])))
-      .catch(() => setProducts(fallbackProducts.slice(0, 4)));
+      .then((data) => {
+        setProducts(normalizeProducts(data.items || []));
+        setError("");
+      })
+      .catch((err) => {
+        setProducts([]);
+        setError(err.message);
+      });
   }, []);
 
   return (
     <main className="min-h-screen bg-page" id="home-page">
       <section className="relative h-[420px] overflow-hidden md:h-[520px]" id="hero-banner">
-        <img
-          src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=85"
-          alt="CommerceHub electronics"
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=85" alt="CommerceHub electronics" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20" />
         <div className="relative z-10 mx-auto flex h-full max-w-app items-center px-6">
           <div className="max-w-xl space-y-5">
-            <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
-              E-Commerce Electronics
-            </span>
+            <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-sm">E-Commerce Electronics</span>
             <h1 className="text-3xl font-bold leading-tight text-white drop-shadow-lg md:text-5xl">Khám phá thế giới công nghệ, mua sắm thả ga.</h1>
-            <p className="max-w-md text-base text-white/85 md:text-lg">CommerceHub tích hợp React, Tailwind, Express API và MongoDB Atlas cho trải nghiệm mua sắm đầy đủ.</p>
+            <p className="max-w-md text-base text-white/85 md:text-lg">CommerceHub tích hợp React, Tailwind, Express API và MongoDB Atlas.</p>
             <div className="flex gap-3 pt-2">
-              <Link to="/products" className="flex h-11 items-center rounded-lg bg-white px-6 text-sm font-semibold text-primary shadow-md transition-all hover:bg-white/90">
-                Mua ngay
-              </Link>
-              <Link to="/admin/dashboard" className="flex h-11 items-center rounded-lg border border-white/50 px-6 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:bg-white/10">
-                Xem dashboard
-              </Link>
+              <Link to="/products" className="flex h-11 items-center rounded-lg bg-white px-6 text-sm font-semibold text-primary shadow-md hover:bg-white/90">Mua ngay</Link>
+              <Link to="/admin/dashboard" className="flex h-11 items-center rounded-lg border border-white/50 px-6 text-sm font-semibold text-white backdrop-blur-sm hover:bg-white/10">Xem dashboard</Link>
             </div>
           </div>
         </div>
@@ -65,9 +61,7 @@ export default function HomePage() {
             {categories.map((cat) => (
               <Link key={cat.name} to={`/products?category=${encodeURIComponent(cat.slug)}`} className="group flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-line bg-white p-3 transition-all hover:border-primary hover:shadow-md">
                 <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#d8e2ff] transition-colors group-hover:bg-primary">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-primary transition-colors group-hover:text-white">
-                    <path d={cat.icon} />
-                  </svg>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-primary transition-colors group-hover:text-white"><path d={cat.icon} /></svg>
                 </span>
                 <span className="text-center text-xs font-medium leading-tight text-[#414754]">{cat.name}</span>
               </Link>
@@ -82,9 +76,15 @@ export default function HomePage() {
             <h2 className="text-2xl font-bold text-ink">Sản phẩm nổi bật</h2>
             <Link to="/products" className="text-sm font-medium text-primary hover:underline">Xem tất cả →</Link>
           </div>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {products.map((product) => <ProductCard key={product.id} product={product} />)}
-          </div>
+          {error ? (
+            <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-800">Không tải được sản phẩm từ backend: {error}</div>
+          ) : products.length === 0 ? (
+            <div className="rounded-xl border border-line bg-white p-8 text-center text-sm text-muted">Chưa có sản phẩm trong database.</div>
+          ) : (
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+              {products.map((product) => <ProductCard key={product.id} product={product} />)}
+            </div>
+          )}
         </div>
       </section>
 
@@ -99,13 +99,8 @@ export default function HomePage() {
             const Icon = item.icon;
             return (
               <div key={item.title} className="flex items-center gap-3">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#d8e2ff] text-primary">
-                  <Icon className="h-5 w-5" />
-                </span>
-                <div>
-                  <p className="text-sm font-semibold text-ink">{item.title}</p>
-                  <p className="text-xs text-muted">{item.sub}</p>
-                </div>
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#d8e2ff] text-primary"><Icon className="h-5 w-5" /></span>
+                <div><p className="text-sm font-semibold text-ink">{item.title}</p><p className="text-xs text-muted">{item.sub}</p></div>
               </div>
             );
           })}
