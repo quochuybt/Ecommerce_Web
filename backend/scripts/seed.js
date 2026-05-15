@@ -33,6 +33,30 @@ const seedCategories = [
   { id: "cat-watch", name: "Dong ho", slug: "dong-ho" },
 ];
 
+const IN_THE_BOX = {
+  "Dien thoai": ["Dien thoai", "Cap sac USB-C (1m)", "Cu sac 20W", "Huong dan su dung", "Kim choc SIM"],
+  "Laptop": ["Laptop", "Cap sac chinh hang", "Tui dung", "Huong dan bao hanh"],
+  "Tablet": ["Tablet", "Cap USB-C (1m)", "Cu sac 20W", "Kim choc SIM", "Huong dan su dung"],
+  "Phu kien": ["Thiet bi chinh", "Cap ket noi", "Huong dan su dung nhanh", "Phieu bao hanh"],
+  "Dong ho": ["Dong ho", "Day deo du phong", "Cap sac", "Huong dan su dung", "Phieu bao hanh"],
+};
+
+const LONG_DESCRIPTIONS = {
+  "Dien thoai": "San pham duoc thiet ke danh cho nhung nguoi dung doi hoi su hoan hao trong tung trai nghiem. Voi chip xu ly the he moi nhat, man hinh sac net va he thong camera chuyen nghiep, day la lua chon hang dau cho ca cong viec lan giai tri. Pin dung luong lon kem sac nhanh dam bao ban luon san sang cho moi nhu cau trong suot ca ngay dai.",
+  "Laptop": "Duoc xay dung cho nhung nguoi dung chuyen nghiep can hieu nang toi da. Voi cau hinh manh me, man hinh sac net va thiet ke mong nhe, san pham nay la nguoi ban dong hanh ly tuong trong cong viec, hoc tap va sang tao noi dung. Thoi luong pin lau giup ban lam viec lien tuc ma khong lo het pin.",
+  "Tablet": "Su ket hop hoan hao giua man hinh rong lon va tinh di dong cua thiet bi cam tay. Ly tuong cho doc sach, xem phim, hoc truc tuyen va lam viec nhe. Man hinh co do phan giai cao va tan so quet lon dem lai trai nghiem mua sac, muat ma.",
+  "Phu kien": "San pham phu kien chinh hang duoc thiet ke de nang cao trai nghiem su dung thiet bi cua ban. Chat lieu cao cap, do ben tot va kha nang tuong thich rong. Tat ca san pham deu trải qua kiem dinh chat luong nghiem ngat truoc khi den tay nguoi dung.",
+  "Dong ho": "Dong ho thong minh the he moi voi vo nhieu cam bien suc khoe tien tien, theo doi hoat dong 24/7 va ket noi khong day voi dien thoai. Thiet ke sang trong, day deo thoai mai, man hinh sac net luon bat giup ban khong bo lo bat ky thong bao hay du lieu suc khoe nao.",
+};
+
+function enrichProduct(p) {
+  return {
+    ...p,
+    long_description: p.long_description || LONG_DESCRIPTIONS[p.category] || p.description,
+    in_the_box: p.in_the_box || IN_THE_BOX[p.category] || [],
+  };
+}
+
 const seedProducts = [
   // --- DIEN THOAI (5) ---
   {
@@ -637,7 +661,7 @@ async function seed() {
 
   console.log("Seeding products...");
   const now = new Date().toISOString();
-  await db.collection("products").insertMany(seedProducts.map((product) => ({ ...product, updated_at: now })));
+  await db.collection("products").insertMany(seedProducts.map((product) => ({ ...enrichProduct(product), updated_at: now })));
 
   console.log("Seeding orders...");
   await db.collection("orders").insertMany(seedOrders);
