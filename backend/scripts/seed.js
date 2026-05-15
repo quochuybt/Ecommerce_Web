@@ -70,7 +70,7 @@ const seedProducts = [
     rating: 4.9,
     review_count: 850,
     image_url: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=900&q=80",
-    description: "Sieu pham titan voi chip A17 Pro va camera zoom quang hoc 5x.",
+    description: "Siêu phẩm titan với chip A17 Pro và camera zoom quang học 5x.",
     is_featured: true,
     specs: {
       "He dieu hanh": "iOS 17",
@@ -93,7 +93,7 @@ const seedProducts = [
     rating: 4.8,
     review_count: 620,
     image_url: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=900&q=80",
-    description: "Quyen nang Galaxy AI voi S Pen va camera 200MP.",
+    description: "Quyền năng Galaxy AI với S Pen và camera 200MP.",
     is_featured: true,
     specs: {
       "He dieu hanh": "Android 14 (One UI 6.1)",
@@ -116,7 +116,7 @@ const seedProducts = [
     rating: 4.7,
     review_count: 120,
     image_url: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=900&q=80",
-    description: "Dinh cao nhiep anh voi ong kinh Leica Summilux.",
+    description: "Đỉnh cao nhiếp ảnh với ống kính Leica Summilux.",
     is_featured: false,
     specs: {
       "He dieu hanh": "HyperOS (Android 14)",
@@ -139,7 +139,7 @@ const seedProducts = [
     rating: 4.6,
     review_count: 85,
     image_url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=900&q=80",
-    description: "He thong camera kep tiem vong dau tien tren the gioi.",
+    description: "Hệ thống camera kép tiềm vọng đầu tiên trên thế giới.",
     is_featured: false,
     specs: {
       "He dieu hanh": "ColorOS 14",
@@ -162,7 +162,7 @@ const seedProducts = [
     rating: 4.8,
     review_count: 340,
     image_url: "https://images.unsplash.com/photo-1565849906461-0e443530e201?auto=format&fit=crop&w=900&q=80",
-    description: "Trai nghiem Android thuan khiet voi chip Google Tensor G3.",
+    description: "Trải nghiệm Android thuần khiết với chip Google Tensor G3.",
     is_featured: false,
     specs: {
       "He dieu hanh": "Android 14",
@@ -187,7 +187,7 @@ const seedProducts = [
     rating: 4.9,
     review_count: 215,
     image_url: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=900&q=80",
-    description: "Hieu nang chuyen nghiep voi mau Space Black moi.",
+    description: "Hiệu năng chuyên nghiệp với màu Space Black mới.",
     is_featured: true,
     specs: {
       "CPU": "Apple M3 Pro 11-core",
@@ -210,7 +210,7 @@ const seedProducts = [
     rating: 4.7,
     review_count: 110,
     image_url: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=900&q=80",
-    description: "Laptop cao cap cho do hoa va sang tao noi dung.",
+    description: "Laptop cao cấp cho đồ hoạ và sáng tạo nội dung.",
     is_featured: false,
     specs: {
       "CPU": "Intel Core i7-13700H",
@@ -233,7 +233,7 @@ const seedProducts = [
     rating: 4.8,
     review_count: 95,
     image_url: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=900&q=80",
-    description: "Laptop xoay gap 360 do sang trong voi man hinh OLED.",
+    description: "Laptop xoay gập 360 độ sang trọng với màn hình OLED.",
     is_featured: false,
     specs: {
       "CPU": "Intel Core Ultra 7 155H",
@@ -255,7 +255,7 @@ const seedProducts = [
     rating: 4.7,
     review_count: 65,
     image_url: "https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?auto=format&fit=crop&w=900&q=80",
-    description: "Am thanh song dong voi loa xoay Soundbar.",
+    description: "Âm thanh sống động với loa xoay Soundbar.",
     is_featured: false,
     specs: {
       "CPU": "Intel Core i7-1360P",
@@ -277,7 +277,7 @@ const seedProducts = [
     rating: 4.9,
     review_count: 45,
     image_url: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=900&q=80",
-    description: "Laptop gaming mong nhe nhat voi man hinh OLED.",
+    description: "Laptop gaming mỏng nhẹ nhất với màn hình OLED.",
     is_featured: true,
     specs: {
       "CPU": "AMD Ryzen 9 8945HS",
@@ -301,7 +301,7 @@ const seedProducts = [
     rating: 5.0,
     review_count: 150,
     image_url: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=900&q=80",
-    description: "Tablet mong nhat cua Apple voi man hinh Ultra Retina XDR.",
+    description: "Tablet mỏng nhất của Apple với màn hình Ultra Retina XDR.",
     is_featured: true,
     specs: {
       "Chip": "Apple M4 9-core",
@@ -323,7 +323,7 @@ const seedProducts = [
     rating: 4.8,
     review_count: 180,
     image_url: "https://images.unsplash.com/photo-1589739900243-4b123b729470?auto=format&fit=crop&w=900&q=80",
-    description: "Man hinh cuc dai 14.6 inch, khang nuoc IP68.",
+    description: "Màn hình cực đại 14.6 inch, kháng nước IP68.",
     is_featured: false,
     specs: {
       "Chip": "Snapdragon 8 Gen 2 for Galaxy",
@@ -345,7 +345,7 @@ const seedProducts = [
     rating: 4.6,
     review_count: 90,
     image_url: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=900&q=80",
-    description: "Su ket hop hoan hao giua laptop va tablet chạy Windows.",
+    description: "Sự kết hợp hoàn hảo giữa laptop và tablet chạy Windows.",
     is_featured: false,
     specs: {
       "CPU": "Intel Core i5-1235U",
@@ -367,7 +367,7 @@ const seedProducts = [
     rating: 4.9,
     review_count: 520,
     image_url: "https://images.unsplash.com/photo-1542751110-97427bbecf20?auto=format&fit=crop&w=900&q=80",
-    description: "Nho gon, manh me voi chip A15 Bionic.",
+    description: "Nhỏ gọn, mạnh mẽ với chip A15 Bionic.",
     is_featured: false,
     specs: {
       "Chip": "Apple A15 Bionic",
@@ -389,7 +389,7 @@ const seedProducts = [
     rating: 4.7,
     review_count: 310,
     image_url: "https://images.unsplash.com/photo-1527698266440-12104e498b76?auto=format&fit=crop&w=900&q=80",
-    description: "Tablet giai tri gia re voi man hinh 144Hz.",
+    description: "Tablet giải trí giá rẻ với màn hình 144Hz.",
     is_featured: false,
     specs: {
       "Chip": "Snapdragon 870",
@@ -413,7 +413,7 @@ const seedProducts = [
     rating: 4.9,
     review_count: 1250,
     image_url: "https://images.unsplash.com/photo-1588423771073-b8903fbb85b5?auto=format&fit=crop&w=900&q=80",
-    description: "Chong on chu dong thong minh hon, am thanh thich ung.",
+    description: "Chống ồn chủ động thông minh hơn, âm thanh thích ứng.",
     is_featured: true,
     specs: {
       "Chip": "Apple H2",
@@ -434,7 +434,7 @@ const seedProducts = [
     rating: 4.8,
     review_count: 420,
     image_url: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?auto=format&fit=crop&w=900&q=80",
-    description: "Tai nghe chong on tot nhat the gioi.",
+    description: "Tai nghe chống ồn tốt nhất thế giới.",
     is_featured: true,
     specs: {
       "Loai tai nghe": "Chup tai (Over-ear)",
@@ -455,7 +455,7 @@ const seedProducts = [
     rating: 4.9,
     review_count: 850,
     image_url: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=900&q=80",
-    description: "Chuot cao cap cho lap trinh vien va designer.",
+    description: "Chuột cao cấp cho lập trình viên và designer.",
     is_featured: false,
     specs: {
       "Do phan giai": "8000 DPI",
@@ -476,7 +476,7 @@ const seedProducts = [
     rating: 4.7,
     review_count: 240,
     image_url: "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=900&q=80",
-    description: "Sac nhanh 3 thiet bi cung luc, nho gon.",
+    description: "Sạc nhanh 3 thiết bị cùng lúc, nhỏ gọn.",
     is_featured: false,
     specs: {
       "Cong suat": "65W Max",
@@ -497,7 +497,7 @@ const seedProducts = [
     rating: 4.8,
     review_count: 185,
     image_url: "https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=900&q=80",
-    description: "Ban phim co khong day layout 75% pho bien nhat.",
+    description: "Bàn phím cơ không dây layout 75% phổ biến nhất.",
     is_featured: false,
     specs: {
       "Switch": "Gateron G Pro (Red/Blue/Brown)",
@@ -520,7 +520,7 @@ const seedProducts = [
     rating: 4.9,
     review_count: 145,
     image_url: "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?auto=format&fit=crop&w=900&q=80",
-    description: "Dong ho the thao chuyen nghiep, ben bi nhat cua Apple.",
+    description: "Đồng hồ thể thao chuyên nghiệp, bền bỉ nhất của Apple.",
     is_featured: true,
     specs: {
       "Chat lieu": "Titanium hang khong",
@@ -542,7 +542,7 @@ const seedProducts = [
     rating: 4.7,
     review_count: 320,
     image_url: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=900&q=80",
-    description: "Vong xoay bezel vat ly huyen thoai tro lai.",
+    description: "Vòng xoay bezel vật lý huyền thoại trở lại.",
     is_featured: false,
     specs: {
       "Man hinh": "1.3 inch Super AMOLED",
@@ -563,7 +563,7 @@ const seedProducts = [
     rating: 4.8,
     review_count: 85,
     image_url: "https://images.unsplash.com/photo-1517502474097-f9b30659dadb?auto=format&fit=crop&w=900&q=80",
-    description: "Dong ho GPS cao cap voi kha nang sac pin bang nang luong mat troi.",
+    description: "Đồng hồ GPS cao cấp với khả năng sạc pin bằng năng lượng mặt trời.",
     is_featured: false,
     specs: {
       "Kinh": "Sapphire Power Glass",
@@ -584,7 +584,7 @@ const seedProducts = [
     rating: 4.7,
     review_count: 210,
     image_url: "https://images.unsplash.com/photo-1617043786394-f977fa12eddf?auto=format&fit=crop&w=900&q=80",
-    description: "Thiet ke thoi trang, pin cuc khung 14 ngay.",
+    description: "Thiết kế thời trang, pin cực khủng 14 ngày.",
     is_featured: false,
     specs: {
       "Man hinh": "1.43 inch AMOLED",
@@ -605,7 +605,7 @@ const seedProducts = [
     rating: 4.5,
     review_count: 140,
     image_url: "https://images.unsplash.com/photo-1510017098667-27dfc7150acb?auto=format&fit=crop&w=900&q=80",
-    description: "GPS bang tan kep, pin 14 ngay, gia hop ly.",
+    description: "GPS băng tần kép, pin 14 ngày, giá hợp lý.",
     is_featured: false,
     specs: {
       "Man hinh": "1.43 inch AMOLED",
