@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { authApi } from "../store/api/authApi.js";
 
 const AuthContext = createContext(null);
@@ -16,6 +16,24 @@ export function AuthProvider({ children }) {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (!token) return;
+
+    authApi
+      .me()
+      .then((data) => {
+        localStorage.setItem(USER_KEY, JSON.stringify(data.user));
+        setUser(data.user);
+      })
+      .catch(() => {
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(REFRESH_KEY);
+        localStorage.removeItem(USER_KEY);
+        setUser(null);
+      });
+  }, []);
 
   async function persistSession(data) {
     localStorage.setItem(TOKEN_KEY, data.accessToken);

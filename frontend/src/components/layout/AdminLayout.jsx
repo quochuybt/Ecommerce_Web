@@ -13,7 +13,7 @@ export default function AdminLayout() {
       <main className="grid min-h-screen place-items-center bg-page px-6">
         <section className="max-w-lg rounded-xl border border-line bg-white p-10 text-center shadow-soft">
           <h1 className="text-2xl font-bold text-ink">Không có quyền admin</h1>
-          <p className="mt-2 text-sm text-[#414754]">Tài khoản hiện tại không phải admin. Hãy đăng nhập bằng admin@example.com.</p>
+          <p className="mt-2 text-sm text-[#414754]">Tài khoản hiện tại không có quyền truy cập khu quản trị.</p>
           <Link className="mt-5 inline-flex h-11 items-center rounded-lg bg-primary px-6 text-sm font-semibold text-white hover:bg-primary-dark" to="/login">Đăng nhập admin</Link>
         </section>
       </main>

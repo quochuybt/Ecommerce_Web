@@ -8,7 +8,7 @@ export default function LoginPage() {
   const { login, loading, error } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [localError, setLocalError] = useState("");
-  const [form, setForm] = useState({ email: "admin@example.com", password: "Admin12345" });
+  const [form, setForm] = useState({ email: "", password: "" });
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -44,7 +44,7 @@ export default function LoginPage() {
         <div className="w-full max-w-[400px]">
           <div className="mb-8">
             <h2 className="text-[28px] font-bold leading-tight tracking-[-0.02em] text-ink">Đăng nhập</h2>
-            <p className="mt-2 text-[15px] leading-relaxed text-[#414754]">Dùng admin@example.com / Admin12345 để vào khu quản trị.</p>
+            <p className="mt-2 text-[15px] leading-relaxed text-[#414754]">Nhập tài khoản của bạn để tiếp tục mua sắm hoặc quản trị.</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6" id="login-form">

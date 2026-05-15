@@ -6,7 +6,7 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const { register, loading, error } = useAuth();
   const [localError, setLocalError] = useState("");
-  const [form, setForm] = useState({ full_name: "Nguyen Van An", email: "newuser@example.com", password: "User12345" });
+  const [form, setForm] = useState({ full_name: "", email: "", password: "" });
 
   async function handleSubmit(event) {
     event.preventDefault();
