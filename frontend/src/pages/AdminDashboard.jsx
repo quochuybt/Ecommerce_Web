@@ -35,7 +35,7 @@ export default function AdminDashboard() {
         icon: DollarSign,
       },
       {
-        label: "Đơn hànggggggggggggg",
+        label: "Đơn hàng",
         value: String(dashboard?.orders_count || 0),
         icon: ShoppingBag,
       },
