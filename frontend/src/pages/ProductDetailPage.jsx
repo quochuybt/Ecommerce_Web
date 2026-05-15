@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { ChevronLeft, Heart, PackageCheck, ShieldCheck, ShoppingCart, Star } from "lucide-react";
+import { ChevronLeft, PackageCheck, ShieldCheck, ShoppingCart, Star } from "lucide-react";
 import { useCart } from "../hooks/useCart.jsx";
 import { productsApi } from "../store/api/productsApi.js";
 import { formatPrice } from "../utils/formatters.js";
@@ -54,7 +54,6 @@ export default function ProductDetailPage() {
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
               <button onClick={() => addToCart(product)} className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"><ShoppingCart className="h-[18px] w-[18px]" /> Thêm vào giỏ</button>
-              <button className="inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-[#c1c6d6] px-6 text-sm font-semibold text-ink transition-colors hover:bg-soft"><Heart className="h-[18px] w-[18px]" /> Yêu thích</button>
             </div>
             <div className="grid gap-3 border-t border-line pt-5 text-sm font-medium text-[#414754]">
               <span className="flex items-center gap-2"><PackageCheck className="h-[18px] w-[18px] text-primary" /> Còn {product.stock} sản phẩm tại kho</span>

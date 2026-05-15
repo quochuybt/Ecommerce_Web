@@ -1,11 +1,9 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Heart, ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart, Star } from "lucide-react";
 import { useCart } from "../../hooks/useCart.jsx";
 import { formatPrice } from "../../utils/formatters.js";
 
 export default function ProductCard({ product }) {
-  const [wishlist, setWishlist] = useState(false);
   const { addToCart } = useCart();
   const image = product.image || product.image_url;
   const originalPrice = product.oldPrice || product.originalPrice || product.price;
@@ -34,16 +32,6 @@ export default function ProductCard({ product }) {
               -{discount}%
             </span>
           )}
-          <button
-            onClick={(event) => {
-              event.preventDefault();
-              setWishlist(!wishlist);
-            }}
-            className="absolute bottom-2.5 right-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-white opacity-0 shadow-md transition-all duration-200 hover:scale-110 group-hover:opacity-100"
-            aria-label="Yêu thích"
-          >
-            <Heart className={`h-4 w-4 ${wishlist ? "fill-accent text-accent" : "text-muted"}`} />
-          </button>
         </div>
       </Link>
 
