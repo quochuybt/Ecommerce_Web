@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
-import { LogOut, Menu, Search, ShoppingBag, UserRound } from "lucide-react";
+import { Cpu, LogOut, Menu, Search, ShoppingBag, Sparkles, UserRound } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.jsx";
 import { useCart } from "../../hooks/useCart.jsx";
 
@@ -12,15 +12,14 @@ const navItems = [
 
 function Logo() {
   return (
-    <Link to="/" className="flex shrink-0 items-center gap-2" id="home-logo">
-      <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white" />
-          <path d="M2 17L12 22L22 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+    <Link to="/" className="group flex shrink-0 items-center gap-3" id="home-logo">
+      <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-mint to-accent text-white shadow-glow transition-transform group-hover:rotate-3 group-hover:scale-105">
+        <Cpu className="h-5 w-5" />
       </span>
-      <span className="text-lg font-bold tracking-tight text-ink">CommerceHub</span>
+      <span className="leading-none">
+        <span className="block text-lg font-black tracking-tight text-ink">CommerceHub</span>
+        <span className="hidden text-[10px] font-semibold uppercase tracking-[0.18em] text-mint sm:block">Tech market</span>
+      </span>
     </Link>
   );
 }
@@ -36,10 +35,16 @@ export default function MainLayout() {
     navigate(`/products${search ? `?search=${encodeURIComponent(search)}` : ""}`);
   }
 
+  function handleLogout() {
+    const confirmed = window.confirm("Bạn có chắc muốn đăng xuất không?");
+    if (!confirmed) return;
+    logout();
+  }
+
   return (
     <div className="min-h-screen bg-page">
-      <header className="sticky top-0 z-50 border-b border-[#c1c6d6] bg-white shadow-sm">
-        <div className="mx-auto flex h-16 max-w-app items-center gap-4 px-6">
+      <header className="sticky top-0 z-50 border-b border-white/60 bg-white/75 shadow-sm backdrop-blur-2xl">
+        <div className="mx-auto flex min-h-[72px] max-w-app items-center gap-4 px-6 py-3">
           <Logo />
 
           <form onSubmit={handleSearch} className="mx-4 hidden max-w-xl flex-1 md:block">
@@ -48,16 +53,26 @@ export default function MainLayout() {
               <input
                 name="search"
                 placeholder="Tìm kiếm sản phẩm..."
-                className="h-10 w-full rounded-lg border border-[#c1c6d6] pl-10 pr-4 text-sm text-ink outline-none transition-all placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/10"
+                className="h-11 w-full rounded-full border border-line bg-white/80 pl-10 pr-4 text-sm text-ink shadow-sm outline-none transition-all placeholder:text-muted focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/10"
               />
             </div>
           </form>
 
           <div className="ml-auto flex shrink-0 items-center gap-2">
-            <Link to="/cart" className="relative rounded-lg p-2 transition-colors hover:bg-soft" id="navbar-cart">
+            <Link to="/products" className="hidden h-10 items-center gap-2 rounded-full bg-ink px-4 text-sm font-semibold text-white shadow-card transition-all hover:-translate-y-0.5 hover:bg-primary lg:flex">
+              <Sparkles className="h-4 w-4 text-orange-200" />
+              Khám phá
+            </Link>
+
+            <Link
+              to={user ? "/cart" : "/login"}
+              state={user ? undefined : { from: "/cart" }}
+              className="relative rounded-full border border-line bg-white/85 p-2.5 shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:shadow-card"
+              id="navbar-cart"
+            >
               <ShoppingBag className="h-[22px] w-[22px] text-ink" />
               {totals.quantity > 0 && (
-                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-white">
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-white ring-2 ring-white">
                   {totals.quantity}
                 </span>
               )}
@@ -65,33 +80,33 @@ export default function MainLayout() {
 
             <Link
               to={user ? "/profile" : "/login"}
-              className="flex h-9 items-center gap-2 rounded-lg border border-[#c1c6d6] px-3 text-sm font-medium text-ink transition-all hover:border-primary hover:bg-soft"
+              className="flex h-10 items-center gap-2 rounded-full border border-line bg-white/85 px-3 text-sm font-semibold text-ink shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:shadow-card"
             >
               <UserRound className="h-[18px] w-[18px]" />
               <span className="hidden sm:inline">{user ? user.full_name : "Đăng nhập"}</span>
             </Link>
 
             {user && (
-              <button onClick={logout} className="rounded-lg p-2 text-muted transition-colors hover:bg-soft hover:text-ink" aria-label="Đăng xuất">
+              <button onClick={handleLogout} className="rounded-full p-2.5 text-muted transition-colors hover:bg-soft hover:text-ink" aria-label="Đăng xuất">
                 <LogOut className="h-5 w-5" />
               </button>
             )}
 
-            <button className="rounded-lg p-2 transition-colors hover:bg-soft lg:hidden" aria-label="Menu">
+            <button className="rounded-full p-2 transition-colors hover:bg-soft lg:hidden" aria-label="Menu">
               <Menu className="h-[22px] w-[22px] text-ink" />
             </button>
           </div>
         </div>
 
-        <nav className="border-t border-line bg-white">
+        <nav className="border-t border-white/70 bg-white/55 backdrop-blur-xl">
           <div className="mx-auto flex h-10 max-w-app items-center gap-6 overflow-x-auto px-6">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `whitespace-nowrap text-sm font-medium transition-colors ${
-                    isActive ? "border-b-2 border-primary pb-0.5 text-primary" : "text-[#414754] hover:text-primary"
+                  `whitespace-nowrap rounded-full px-3 py-1 text-sm font-semibold transition-all ${
+                    isActive ? "bg-primary text-white shadow-sm" : "text-[#414754] hover:bg-white hover:text-primary"
                   }`
                 }
               >
@@ -99,7 +114,7 @@ export default function MainLayout() {
               </NavLink>
             ))}
             {user?.role === "admin" && (
-              <NavLink to="/admin/dashboard" className="whitespace-nowrap text-sm font-medium text-[#414754] hover:text-primary">
+              <NavLink to="/admin/dashboard" className="whitespace-nowrap rounded-full px-3 py-1 text-sm font-semibold text-[#414754] hover:bg-white hover:text-primary">
                 Quản trị
               </NavLink>
             )}
@@ -109,12 +124,17 @@ export default function MainLayout() {
 
       <Outlet />
 
-      <footer className="bg-[#2d3038] text-[#eff0fa]" id="footer">
+      <footer className="bg-[#101828] text-[#eff0fa]" id="footer">
         <div className="mx-auto grid max-w-app grid-cols-2 gap-8 px-6 py-12 md:grid-cols-4">
           <div className="col-span-2 space-y-3 md:col-span-1">
             <div className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white">C</span>
-              <span className="font-bold text-white">CommerceHub</span>
+              <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-mint to-accent text-white shadow-glow">
+                <Cpu className="h-5 w-5" />
+              </span>
+              <span className="leading-none">
+                <span className="block font-black text-white">CommerceHub</span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-mint">Tech market</span>
+              </span>
             </div>
             <p className="text-sm leading-relaxed text-[#eff0fa]/60">Nền tảng mua sắm thiết bị điện tử tích hợp Express API và MongoDB.</p>
           </div>

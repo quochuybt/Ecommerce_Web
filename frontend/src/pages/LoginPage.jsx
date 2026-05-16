@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Cpu, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../hooks/useAuth.jsx";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { login, loading, error } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [localError, setLocalError] = useState("");
@@ -15,7 +16,7 @@ export default function LoginPage() {
     setLocalError("");
     try {
       const user = await login({ email: form.email.trim(), password: form.password });
-      navigate(user.role === "admin" ? "/admin/dashboard" : "/profile", { replace: true });
+      navigate(location.state?.from || (user.role === "admin" ? "/admin/dashboard" : "/profile"), { replace: true });
     } catch (err) {
       setLocalError(err.message);
     }
@@ -29,8 +30,13 @@ export default function LoginPage() {
         <div className="absolute inset-0 z-10 flex flex-col justify-end p-16 lg:p-24">
           <div className="max-w-md space-y-6">
             <div className="flex items-center gap-3">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/30 bg-white/20 text-white backdrop-blur-md">C</span>
-              <span className="text-lg font-semibold tracking-tight text-white">CommerceHub</span>
+              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-mint to-accent text-white shadow-glow">
+                <Cpu className="h-5 w-5" />
+              </span>
+              <span className="leading-none">
+                <span className="block text-lg font-black tracking-tight text-white">CommerceHub</span>
+                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-mint">Tech market</span>
+              </span>
             </div>
             <div className="space-y-4">
               <h1 className="text-4xl font-bold leading-tight tracking-tight text-white">Khám phá thế giới, mua sắm thả ga.</h1>

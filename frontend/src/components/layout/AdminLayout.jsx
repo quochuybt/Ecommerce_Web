@@ -1,10 +1,16 @@
 import { Link, Navigate, NavLink, Outlet, useLocation } from "react-router-dom";
-import { BarChart3, Boxes, LogOut, Store } from "lucide-react";
+import { BarChart3, Boxes, Cpu, LogOut, Store } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth.jsx";
 
 export default function AdminLayout() {
   const location = useLocation();
   const { user, logout } = useAuth();
+
+  function handleLogout() {
+    const confirmed = window.confirm("Bạn có chắc muốn đăng xuất không?");
+    if (!confirmed) return;
+    logout();
+  }
 
   if (!user) return <Navigate to="/login" replace state={{ from: location.pathname }} />;
 
@@ -23,9 +29,14 @@ export default function AdminLayout() {
   return (
     <div className="grid min-h-screen bg-page md:grid-cols-[260px_1fr]">
       <aside className="bg-[#2d3038] p-6 text-white">
-        <Link className="flex items-center gap-2" to="/">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white">C</span>
-          <span className="font-bold">CommerceHub</span>
+        <Link className="group flex items-center gap-3" to="/">
+          <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-mint to-accent text-white shadow-glow transition-transform group-hover:rotate-3 group-hover:scale-105">
+            <Cpu className="h-5 w-5" />
+          </span>
+          <span className="leading-none">
+            <span className="block font-black">CommerceHub</span>
+            <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-mint">Tech market</span>
+          </span>
         </Link>
         <nav className="mt-8 grid gap-2">
           {[
@@ -46,7 +57,7 @@ export default function AdminLayout() {
               </NavLink>
             );
           })}
-          <button onClick={logout} className="mt-4 flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-semibold text-white/70 transition-colors hover:bg-white/10 hover:text-white">
+          <button onClick={handleLogout} className="mt-4 flex h-11 items-center gap-3 rounded-lg px-3 text-sm font-semibold text-white/70 transition-colors hover:bg-white/10 hover:text-white">
             <LogOut className="h-[18px] w-[18px]" /> Đăng xuất
           </button>
         </nav>
