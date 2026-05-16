@@ -1,6 +1,12 @@
 import { SlidersHorizontal } from "lucide-react";
 
-const categories = ["Dien thoai", "Laptop", "Tablet", "Phu kien", "Dong ho"];
+const categories = [
+  { label: "Điện thoại", value: "Điện thoại" },
+  { label: "Laptop", value: "Laptop" },
+  { label: "Tablet", value: "Tablet" },
+  { label: "Phụ kiện", value: "Phụ kiện" },
+  { label: "Đồng hồ", value: "Đồng hồ" },
+];
 
 export default function ProductFilters({ filters, setFilters }) {
   return (
@@ -25,8 +31,8 @@ export default function ProductFilters({ filters, setFilters }) {
         >
           <option value="Tất cả">Tất cả</option>
           {categories.map((category) => (
-            <option key={category} value={category}>
-              {category}
+            <option key={category.value} value={category.value}>
+              {category.label}
             </option>
           ))}
         </select>

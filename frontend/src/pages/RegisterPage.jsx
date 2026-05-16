@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Cpu } from "lucide-react";
 import { useAuth } from "../hooks/useAuth.jsx";
 
 export default function RegisterPage() {
@@ -23,6 +24,15 @@ export default function RegisterPage() {
     <main className="flex min-h-screen items-center justify-center bg-page px-6 py-10">
       <section className="w-full max-w-[440px] rounded-2xl border border-line bg-white p-8 shadow-soft">
         <div className="mb-8">
+          <Link to="/" className="mb-6 flex items-center gap-3">
+            <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-mint to-accent text-white shadow-glow">
+              <Cpu className="h-5 w-5" />
+            </span>
+            <span className="leading-none">
+              <span className="block font-black text-ink">CommerceHub</span>
+              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-mint">Tech market</span>
+            </span>
+          </Link>
           <span className="text-xs font-bold uppercase tracking-wider text-primary">Create Account</span>
           <h1 className="mt-2 text-3xl font-bold text-ink">Đăng ký</h1>
           <p className="mt-2 text-sm text-[#414754]">Tạo tài khoản người dùng trong MongoDB.</p>

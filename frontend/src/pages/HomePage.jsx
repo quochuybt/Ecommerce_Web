@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   BadgeCheck,
@@ -20,28 +20,36 @@ import { productsApi } from "../store/api/productsApi.js";
 import { normalizeProducts } from "../utils/productMapper.js";
 
 const categories = [
-  { name: "Điện thoại", slug: "Dien thoai", icon: Smartphone },
-  { name: "Laptop", slug: "Laptop", icon: Laptop },
-  { name: "Tablet", slug: "Tablet", icon: Tablet },
-  { name: "Phụ kiện", slug: "Phu kien", icon: Cable },
-  { name: "Đồng hồ", slug: "Dong ho", icon: Watch },
-  { name: "Âm thanh", slug: "Phu kien", icon: Headphones },
-  { name: "Gaming", slug: "Laptop", icon: Gamepad2 },
-  { name: "Smart home", slug: "Phu kien", icon: HousePlug },
+  { name: "Điện thoại", value: "Điện thoại", icon: Smartphone },
+  { name: "Laptop", value: "Laptop", icon: Laptop },
+  { name: "Tablet", value: "Tablet", icon: Tablet },
+  { name: "Phụ kiện", value: "Phụ kiện", icon: Cable },
+  { name: "Đồng hồ", value: "Đồng hồ", icon: Watch },
+  { name: "Âm thanh", value: "Phụ kiện", icon: Headphones },
+  { name: "Gaming", value: "Laptop", icon: Gamepad2 },
+  { name: "Smart home", value: "Phụ kiện", icon: HousePlug },
+];
+
+const featuredCategories = [
+  { name: "Điện thoại", value: "Điện thoại" },
+  { name: "Laptop", value: "Laptop" },
+  { name: "Tablet", value: "Tablet" },
+  { name: "Phụ kiện", value: "Phụ kiện" },
+  { name: "Đồng hồ", value: "Đồng hồ" },
 ];
 
 const heroSlides = [
   {
     eyebrow: "E-Commerce Electronics",
-    title: "Khám phá thế giới công nghệ, mua sắm thả ga.",
+    title: "Sắm đồ công nghệ theo cách sáng hơn, nhanh hơn.",
     description:
-      "CommerceHub tích hợp React, Tailwind, Express API và MongoDB Atlas.",
+      "CommerceHub gom laptop, điện thoại và phụ kiện thành một trải nghiệm mua sắm gọn, đẹp và dễ chọn.",
     image:
       "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1600&q=85",
   },
   {
     eyebrow: "Laptop & Gaming Gear",
-    title: "Hiệu năng mạnh mẽ cho học tập, làm việc và giải trí.",
+    title: "Setup học, làm, chơi nhìn đã mắt từ cú click đầu tiên.",
     description:
       "Chọn laptop, phụ kiện và thiết bị gaming phù hợp với nhu cầu của bạn.",
     image:
@@ -49,7 +57,7 @@ const heroSlides = [
   },
   {
     eyebrow: "Smart Devices",
-    title: "Nâng cấp không gian sống với thiết bị thông minh.",
+    title: "Thiết bị thông minh cho nhịp sống gọn gàng hơn.",
     description:
       "Tìm điện thoại, đồng hồ, tai nghe và sản phẩm smart home mới nhất.",
     image:
@@ -61,6 +69,7 @@ export default function HomePage() {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
   const [activeSlide, setActiveSlide] = useState(0);
+  const [activeProductShift, setActiveProductShift] = useState(0);
   const currentSlide = heroSlides[activeSlide];
 
   const showPreviousSlide = () => {
@@ -80,7 +89,7 @@ export default function HomePage() {
 
   useEffect(() => {
     productsApi
-      .list("?limit=4&sort=rating")
+      .list("?limit=30&sort=rating")
       .then((data) => {
         setProducts(normalizeProducts(data.items || []));
         setError("");
@@ -91,10 +100,36 @@ export default function HomePage() {
       });
   }, []);
 
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setActiveProductShift((shift) => shift + 1);
+    }, 5000);
+
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const featuredRows = useMemo(
+    () =>
+      featuredCategories
+        .map((category) => ({
+          ...category,
+          products: products.filter((product) => product.category === category.value),
+        }))
+        .filter((category) => category.products.length > 0),
+    [products],
+  );
+
+  const getVisibleProducts = (categoryProducts) => {
+    const visibleCount = Math.min(4, categoryProducts.length);
+    const start = categoryProducts.length > visibleCount ? activeProductShift % categoryProducts.length : 0;
+
+    return Array.from({ length: visibleCount }, (_, index) => categoryProducts[(start + index) % categoryProducts.length]);
+  };
+
   return (
     <main className="min-h-screen bg-page" id="home-page">
       <section
-        className="relative h-[420px] overflow-hidden md:h-[520px]"
+        className="relative min-h-[560px] overflow-hidden md:min-h-[640px]"
         id="hero-banner"
       >
         {heroSlides.map((slide, index) => (
@@ -107,31 +142,44 @@ export default function HomePage() {
             }`}
           />
         ))}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-black/20" />
-        <div className="relative z-10 mx-auto flex h-full max-w-app items-center px-6">
-          <div key={currentSlide.title} className="max-w-xl animate-hero-copy space-y-5">
-            <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-sm">
+        <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(3,7,18,0.88)_0%,rgba(15,23,42,0.68)_43%,rgba(20,184,166,0.2)_72%,rgba(249,115,22,0.2)_100%)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-page to-transparent" />
+        <div className="relative z-10 mx-auto flex min-h-[560px] max-w-app items-center px-6 py-16 md:min-h-[640px]">
+          <div key={currentSlide.title} className="max-w-3xl animate-hero-copy space-y-6">
+            <span className="inline-flex items-center rounded-full border border-white/25 bg-white/15 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white shadow-sm backdrop-blur-sm">
               {currentSlide.eyebrow}
             </span>
-            <h1 className="text-3xl font-bold leading-tight text-white drop-shadow-lg md:text-5xl">
+            <h1 className="max-w-[760px] text-4xl font-black leading-tight text-white drop-shadow-lg md:text-6xl">
               {currentSlide.title}
             </h1>
-            <p className="max-w-md text-base text-white/85 md:text-lg">
+            <p className="max-w-xl text-base leading-8 text-white/85 md:text-lg">
               {currentSlide.description}
             </p>
-            <div className="flex gap-3 pt-2">
+            <div className="flex flex-wrap gap-3 pt-2">
               <Link
                 to="/products"
-                className="flex h-11 items-center rounded-lg bg-white px-6 text-sm font-semibold text-primary shadow-md hover:bg-white/90"
+                className="flex h-12 items-center rounded-full bg-white px-7 text-sm font-bold text-primary shadow-glow transition-all hover:-translate-y-0.5 hover:bg-white/90"
               >
                 Mua ngay
               </Link>
               <Link
                 to="/admin/dashboard"
-                className="flex h-11 items-center rounded-lg border border-white/50 px-6 text-sm font-semibold text-white backdrop-blur-sm hover:bg-white/10"
+                className="flex h-12 items-center rounded-full border border-white/50 px-7 text-sm font-bold text-white backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:bg-white/10"
               >
                 Xem dashboard
               </Link>
+            </div>
+            <div className="grid max-w-lg grid-cols-3 gap-3 pt-5">
+              {[
+                ["24+", "Sản phẩm"],
+                ["4.8", "Đánh giá"],
+                ["2h", "Giao nhanh"],
+              ].map(([value, label]) => (
+                <div key={label} className="rounded-2xl border border-white/20 bg-white/10 px-4 py-3 text-white backdrop-blur-md">
+                  <p className="text-xl font-black">{value}</p>
+                  <p className="text-xs font-medium text-white/70">{label}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -164,15 +212,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="py-12" id="category-section">
+      <section className="-mt-10 pb-14" id="category-section">
         <div className="mx-auto max-w-app px-6">
+          <div className="glass-panel rounded-[2rem] p-5 md:p-7">
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-ink">Danh mục sản phẩm</h2>
+            <h2 className="text-2xl font-black text-ink">Danh mục sản phẩm</h2>
             <Link
               to="/products"
-              className="text-sm font-medium text-primary hover:underline"
+              className="rounded-full bg-ink px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-primary"
             >
-              Xem tất cả →
+              Xem tất cả
             </Link>
           </div>
           <div className="grid grid-cols-4 gap-3 sm:grid-cols-4 md:grid-cols-8">
@@ -181,10 +230,10 @@ export default function HomePage() {
               return (
                 <Link
                   key={cat.name}
-                  to={`/products?category=${encodeURIComponent(cat.slug)}`}
-                  className="group flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-line bg-white p-3 transition-all hover:border-primary hover:shadow-md"
+                  to={`/products?category=${encodeURIComponent(cat.value)}`}
+                  className="group flex cursor-pointer flex-col items-center gap-2 rounded-2xl border border-white bg-white/85 p-3 shadow-sm transition-all hover:-translate-y-1 hover:border-primary hover:shadow-card"
                 >
-                  <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#d8e2ff] transition-colors group-hover:bg-primary">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-100 to-teal-100 transition-colors group-hover:from-primary group-hover:to-mint">
                     <Icon className="h-6 w-6 text-primary transition-colors group-hover:text-white" />
                   </span>
                   <span className="text-center text-xs font-medium leading-tight text-[#414754]">
@@ -194,16 +243,20 @@ export default function HomePage() {
               );
             })}
           </div>
+          </div>
         </div>
       </section>
 
-      <section className="bg-soft py-12" id="featured-products">
+      <section className="py-12" id="featured-products">
         <div className="mx-auto max-w-app px-6">
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-ink">Sản phẩm nổi bật</h2>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.24em] text-mint">Top rated</p>
+              <h2 className="text-2xl font-black text-ink">Sản phẩm nổi bật</h2>
+            </div>
             <Link
               to="/products"
-              className="text-sm font-medium text-primary hover:underline"
+              className="text-sm font-bold text-primary hover:underline"
             >
               Xem tất cả →
             </Link>
@@ -212,21 +265,57 @@ export default function HomePage() {
             <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-800">
               Không tải được sản phẩm từ backend: {error}
             </div>
-          ) : products.length === 0 ? (
+          ) : featuredRows.length === 0 ? (
             <div className="rounded-xl border border-line bg-white p-8 text-center text-sm text-muted">
               Chưa có sản phẩm trong database.
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+            <div className="space-y-10">
+              {featuredRows.map((category) => {
+                const visibleProducts = getVisibleProducts(category.products);
+                const shouldAnimateIncoming = category.products.length > visibleProducts.length;
+
+                return (
+                  <div key={category.value} className="overflow-hidden rounded-[2rem] border border-white/80 bg-white/55 p-4 shadow-sm backdrop-blur-xl md:p-5">
+                    <div className="mb-4 flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-mint">Danh mục</p>
+                        <h3 className="text-xl font-black text-ink">{category.name}</h3>
+                      </div>
+                      <Link
+                        to={`/products?category=${encodeURIComponent(category.value)}`}
+                        className="shrink-0 rounded-full bg-ink px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-primary"
+                      >
+                        Xem thêm
+                      </Link>
+                    </div>
+                    <div
+                      key={`${category.value}-${activeProductShift}`}
+                      className="grid animate-product-row-shift grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4"
+                    >
+                      {visibleProducts.map((product, index) => {
+                        const isIncoming = shouldAnimateIncoming && index === visibleProducts.length - 1;
+
+                        return (
+                          <div
+                            key={`${category.value}-${product.id}-${activeProductShift}`}
+                            className={isIncoming ? "animate-product-enter" : "animate-product-settle"}
+                            style={{ animationDelay: `${index * 55}ms` }}
+                          >
+                            <ProductCard product={product} />
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
       </section>
 
-      <section className="border-y border-line bg-white py-8" id="promo-strip">
+      <section className="border-y border-white/70 bg-white/60 py-8 backdrop-blur-xl" id="promo-strip">
         <div className="mx-auto grid max-w-app grid-cols-2 gap-6 px-6 md:grid-cols-4">
           {[
             { icon: Truck, title: "Giao nhanh", sub: "2 giờ tại nội thành" },

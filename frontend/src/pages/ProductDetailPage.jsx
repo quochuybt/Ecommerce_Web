@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { ChevronLeft, Heart, PackageCheck, ShieldCheck, ShoppingCart, Star, Package } from "lucide-react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { ChevronLeft, CreditCard, PackageCheck, ShieldCheck, ShoppingCart, Star, Package } from "lucide-react";
+import { useAuth } from "../hooks/useAuth.jsx";
 import { useCart } from "../hooks/useCart.jsx";
 import { productsApi } from "../store/api/productsApi.js";
 import { formatPrice } from "../utils/formatters.js";
@@ -8,9 +9,12 @@ import { normalizeProduct } from "../utils/productMapper.js";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -37,6 +41,29 @@ export default function ProductDetailPage() {
   const inTheBox = product.in_the_box || [];
   const longDescription = product.long_description || product.description;
 
+  function goToLogin() {
+    navigate("/login", { state: { from: `${location.pathname}${location.search}` } });
+  }
+
+  async function handleAddToCart() {
+    if (!user) {
+      goToLogin();
+      return;
+    }
+
+    await addToCart(product);
+  }
+
+  async function handleBuyNow() {
+    if (!user) {
+      goToLogin();
+      return;
+    }
+
+    await addToCart(product);
+    navigate("/checkout");
+  }
+
   return (
     <main className="min-h-screen bg-page py-10">
       <div className="mx-auto max-w-app px-6 space-y-6">
@@ -59,7 +86,8 @@ export default function ProductDetailPage() {
               {originalPrice > product.price && <span className="text-sm text-muted line-through">{formatPrice(originalPrice)}</span>}
             </div>
             <div className="flex flex-col gap-3 sm:flex-row">
-              <button onClick={() => addToCart(product)} className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"><ShoppingCart className="h-[18px] w-[18px]" /> Thêm vào giỏ</button>
+              <button onClick={handleAddToCart} className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-sm font-semibold text-white transition-colors hover:bg-primary-dark"><ShoppingCart className="h-[18px] w-[18px]" /> Thêm vào giỏ</button>
+              <button onClick={handleBuyNow} className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-ink px-6 text-sm font-semibold text-white transition-colors hover:bg-accent"><CreditCard className="h-[18px] w-[18px]" /> Mua ngay</button>
             </div>
             <div className="grid gap-3 border-t border-line pt-5 text-sm font-medium text-[#414754]">
               <span className="flex items-center gap-2"><PackageCheck className="h-[18px] w-[18px] text-primary" /> Còn {product.stock} sản phẩm tại kho</span>
