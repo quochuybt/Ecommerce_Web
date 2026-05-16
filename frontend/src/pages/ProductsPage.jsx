@@ -123,16 +123,7 @@ export default function ProductsPage() {
                   : `Khám phá ${productRows.length} sản phẩm phù hợp`}
               </p>
             </div>
-            <div className="grid grid-cols-3 gap-2 text-center">
-              {["Nhanh", "Đẹp", "Dễ lọc"].map((label) => (
-                <span
-                  key={label}
-                  className="rounded-full border border-white/15 bg-white/10 px-3 py-2 text-xs font-bold text-white/80"
-                >
-                  {label}
-                </span>
-              ))}
-            </div>
+
           </div>
           {error && (
             <p className="mt-3 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
