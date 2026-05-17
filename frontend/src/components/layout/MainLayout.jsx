@@ -80,9 +80,17 @@ export default function MainLayout() {
 
             <Link
               to={user ? "/profile" : "/login"}
-              className="flex h-10 items-center gap-2 rounded-full border border-line bg-white/85 px-3 text-sm font-semibold text-ink shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:shadow-card"
+              className="flex h-10 items-center gap-2 rounded-full border border-line bg-white/85 pl-2 pr-3 text-sm font-semibold text-ink shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:shadow-card"
             >
-              <UserRound className="h-[18px] w-[18px]" />
+              {user?.avatar_url ? (
+                <img
+                  src={user.avatar_url}
+                  alt={user.full_name}
+                  className="h-6 w-6 rounded-full object-cover border border-[#c1c6d6]"
+                />
+              ) : (
+                <UserRound className="h-[18px] w-[18px]" />
+              )}
               <span className="hidden sm:inline">{user ? user.full_name : "Đăng nhập"}</span>
             </Link>
 
