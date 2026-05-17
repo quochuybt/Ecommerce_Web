@@ -145,10 +145,11 @@ export default function ProfilePage() {
 
       if (res.user) {
         updateUser({
-          full_name: res.user.full_name,
-          avatar_url: res.user.avatar_url,
-          phone_number: res.user.phone_number,
-          location: res.user.location,
+          ...res.user,
+          full_name: res.user.full_name ?? fullName,
+          avatar_url: res.user.avatar_url ?? avatarUrl,
+          phone_number: res.user.phone_number ?? phoneNumber,
+          location: res.user.location ?? location,
         });
         setSuccessMsg("Cập nhật thông tin hồ sơ thành công!");
       } else {
