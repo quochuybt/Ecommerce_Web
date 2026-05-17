@@ -45,6 +45,8 @@ router.put("/:id", verifyAuth, async (req, res, next) => {
         $set: {
           full_name: req.body.full_name,
           avatar_url: req.body.avatar_url,
+          phone_number: req.body.phone_number,
+          location: req.body.location,
           updated_at: new Date().toISOString(),
         },
       },
