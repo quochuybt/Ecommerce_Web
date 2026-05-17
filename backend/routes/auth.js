@@ -30,6 +30,8 @@ router.post("/register", async (req, res, next) => {
       full_name,
       role: "user",
       avatar_url: "",
+      phone_number: "",
+      location: "",
       is_active: true,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
