@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Camera, Save, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { useAuth } from "../hooks/useAuth.jsx";
@@ -49,12 +49,24 @@ export default function ProfilePage() {
   const { user, updateUser } = useAuth();
   const fileInputRef = useRef(null);
 
-  const [fullName, setFullName] = useState(user?.full_name || "");
-  const [avatarUrl, setAvatarUrl] = useState(user?.avatar_url || "");
+  const [fullName, setFullName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [location, setLocation] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+
+  // Sync user details to local states on load or reload
+  useEffect(() => {
+    if (user) {
+      setFullName(user.full_name || "");
+      setPhoneNumber(user.phone_number || "");
+      setLocation(user.location || "");
+      setAvatarUrl(user.avatar_url || "");
+    }
+  }, [user]);
 
   if (!user) {
     return (
@@ -123,18 +135,22 @@ export default function ProfilePage() {
     setSuccessMsg("");
 
     try {
-      // Direct API update to user profile, sending the base64 avatar directly
+      // Direct API update to user profile, sending fields directly
       const res = await api.put(`/users/${user.id}`, {
         full_name: fullName,
         avatar_url: avatarUrl,
+        phone_number: phoneNumber,
+        location: location,
       });
 
       if (res.user) {
         updateUser({
           full_name: res.user.full_name,
           avatar_url: res.user.avatar_url,
+          phone_number: res.user.phone_number,
+          location: res.user.location,
         });
-        setSuccessMsg("Cập nhật hồ sơ và ảnh đại diện thành công!");
+        setSuccessMsg("Cập nhật thông tin hồ sơ thành công!");
       } else {
         setErrorMsg("Không tìm thấy thông tin user cập nhật.");
       }
@@ -223,6 +239,32 @@ export default function ProfilePage() {
                 className="h-11 w-full rounded-lg border border-[#c1c6d6] px-3.5 text-sm outline-none focus:border-primary transition-all focus:ring-2 focus:ring-primary/10"
               />
             </label>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <label>
+                <span className="mb-1.5 block text-sm font-medium text-ink">
+                  Số điện thoại
+                </span>
+                <input
+                  type="tel"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  placeholder="Nhập số điện thoại"
+                  className="h-11 w-full rounded-lg border border-[#c1c6d6] px-3.5 text-sm outline-none focus:border-primary transition-all focus:ring-2 focus:ring-primary/10"
+                />
+              </label>
+              <label>
+                <span className="mb-1.5 block text-sm font-medium text-ink">
+                  Địa chỉ
+                </span>
+                <input
+                  type="text"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  placeholder="Ví dụ: TP. Hồ Chí Minh"
+                  className="h-11 w-full rounded-lg border border-[#c1c6d6] px-3.5 text-sm outline-none focus:border-primary transition-all focus:ring-2 focus:ring-primary/10"
+                />
+              </label>
+            </div>
             <label>
               <span className="mb-1.5 block text-sm font-medium text-ink">
                 Email
