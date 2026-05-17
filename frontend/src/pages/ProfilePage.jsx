@@ -45,6 +45,11 @@ const compressImage = (file, maxWidth = 300, maxHeight = 300, quality = 0.7) => 
   });
 };
 
+const keepSubmittedValue = (serverValue, submittedValue) => {
+  if (submittedValue && !serverValue) return submittedValue;
+  return serverValue ?? submittedValue;
+};
+
 export default function ProfilePage() {
   const { user, updateUser } = useAuth();
   const fileInputRef = useRef(null);
@@ -138,18 +143,23 @@ export default function ProfilePage() {
       // Direct API update to user profile, sending fields directly
       const res = await api.put(`/users/${user.id}`, {
         full_name: fullName,
+        fullName,
         avatar_url: avatarUrl,
+        avatarUrl,
         phone_number: phoneNumber,
-        location: location,
+        phoneNumber,
+        phone: phoneNumber,
+        location,
+        address: location,
       });
 
       if (res.user) {
         updateUser({
           ...res.user,
-          full_name: res.user.full_name ?? fullName,
-          avatar_url: res.user.avatar_url ?? avatarUrl,
-          phone_number: res.user.phone_number ?? phoneNumber,
-          location: res.user.location ?? location,
+          full_name: keepSubmittedValue(res.user.full_name, fullName),
+          avatar_url: keepSubmittedValue(res.user.avatar_url, avatarUrl),
+          phone_number: keepSubmittedValue(res.user.phone_number, phoneNumber),
+          location: keepSubmittedValue(res.user.location, location),
         });
         setSuccessMsg("Cập nhật thông tin hồ sơ thành công!");
       } else {

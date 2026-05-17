@@ -9,6 +9,15 @@ function publicUser(user) {
   return safeUser;
 }
 
+function readBodyField(body, fieldNames) {
+  for (const fieldName of fieldNames) {
+    if (Object.prototype.hasOwnProperty.call(body, fieldName) && body[fieldName] !== undefined) {
+      return body[fieldName];
+    }
+  }
+  return undefined;
+}
+
 router.get("/", verifyAuth, checkAdmin, async (req, res, next) => {
   try {
     const users = await getCollection("users");
@@ -40,17 +49,17 @@ router.put("/:id", verifyAuth, async (req, res, next) => {
     }
     const users = await getCollection("users");
 
-    const updateFields = {
-      full_name: req.body.full_name,
-      avatar_url: req.body.avatar_url,
-      phone_number: req.body.phone_number,
-      location: req.body.location,
-      updated_at: new Date().toISOString(),
-    };
+    const updateFields = { updated_at: new Date().toISOString() };
 
-    Object.keys(updateFields).forEach((key) => {
-      if (updateFields[key] === undefined) delete updateFields[key];
-    });
+    const fullName = readBodyField(req.body, ["full_name", "fullName"]);
+    const avatarUrl = readBodyField(req.body, ["avatar_url", "avatarUrl"]);
+    const phoneNumber = readBodyField(req.body, ["phone_number", "phoneNumber", "phone"]);
+    const location = readBodyField(req.body, ["location", "address"]);
+
+    if (fullName !== undefined) updateFields.full_name = fullName;
+    if (avatarUrl !== undefined) updateFields.avatar_url = avatarUrl;
+    if (phoneNumber !== undefined) updateFields.phone_number = phoneNumber;
+    if (location !== undefined) updateFields.location = location;
 
     const result = await users.updateOne({ id: req.params.id }, { $set: updateFields });
     if (!result.matchedCount) return res.status(404).json({ error: "User not found" });
