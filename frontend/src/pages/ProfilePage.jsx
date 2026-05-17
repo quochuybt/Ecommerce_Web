@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Camera, Save, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 import { useAuth } from "../hooks/useAuth.jsx";
@@ -49,14 +49,24 @@ export default function ProfilePage() {
   const { user, updateUser } = useAuth();
   const fileInputRef = useRef(null);
 
-  const [fullName, setFullName] = useState(user?.full_name || "");
-  const [phoneNumber, setPhoneNumber] = useState(user?.phone_number || "");
-  const [location, setLocation] = useState(user?.location || "");
-  const [avatarUrl, setAvatarUrl] = useState(user?.avatar_url || "");
+  const [fullName, setFullName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [location, setLocation] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+
+  // Sync user details to local states on load or reload
+  useEffect(() => {
+    if (user) {
+      setFullName(user.full_name || "");
+      setPhoneNumber(user.phone_number || "");
+      setLocation(user.location || "");
+      setAvatarUrl(user.avatar_url || "");
+    }
+  }, [user]);
 
   if (!user) {
     return (
